@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+/**
+ * Gets the data from the ContentProvider and shows a series of flash cards.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private int mCurrentState;

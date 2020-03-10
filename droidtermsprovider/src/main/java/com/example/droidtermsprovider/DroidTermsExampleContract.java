@@ -1,14 +1,13 @@
-package com.example.favouritetoyspart2;
+package com.example.droidtermsprovider;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-/**
- * The contract between the DroidTermsExample provider and other
- * applications. Contains definitions for the supported URIs and columns.
- */
+/** The contract between the DroidTermsExample provider and othrer
+ * applications Contains definitions for the
+ * supported URIs and columns. */
 public class DroidTermsExampleContract implements BaseColumns {
 
     /**
@@ -32,7 +31,6 @@ public class DroidTermsExampleContract implements BaseColumns {
     public static final Uri CONTENT_URI =
             BASE_CONTENT_URI.buildUpon().appendPath(PATH_TERMS).build();
 
-
     /**
      * This is a String type that denotes a Uri references a list or directory.
      */
@@ -44,7 +42,6 @@ public class DroidTermsExampleContract implements BaseColumns {
      */
     public static final String CONTENT_ITEM_TYPE =
             ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TERMS;
-
 
     // Declaring all these as constants makes code a lot more readable.
     // It also looks a more like SQL.
@@ -58,7 +55,6 @@ public class DroidTermsExampleContract implements BaseColumns {
      * This is the name of the SQL table for terms.
      */
     public static final String TERMS_TABLE = "term_entries";
-
     /**
      * This is the name of the SQL database for terms.
      */
@@ -68,7 +64,6 @@ public class DroidTermsExampleContract implements BaseColumns {
      * This is the column name in the SQLiteDatabase for the word.
      */
     public static final String COLUMN_WORD = "word";
-
     /**
      * This is the column name in the SQLiteDatabase for the definition.
      */

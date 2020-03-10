@@ -1,2 +1,3 @@
 rootProject.name='FavouriteToysPart2'
 include ':app'
+include ':droidtermsprovider'
