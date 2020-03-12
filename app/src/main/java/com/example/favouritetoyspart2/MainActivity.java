@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.droidtermsprovider.DroidTermsExampleContract;
 
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private int mCurrentState;
     private Cursor mData;
     private Button mButton;
+    TextView mWordTextView;
+    TextView mDefinitionTextView;
 
     // This state is when the word definition is hidden and clicking
     // the button will therefore show the definition
@@ -27,12 +30,15 @@ public class MainActivity extends AppCompatActivity {
     // This state is when the word definition is shown and clicking the
     // button will therefore advance the app to the next word
     private final int STATE_SHOWN = 1;
+    private int mWordCol, mDefCol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mWordTextView = findViewById(R.id.text_view_word);
+        mDefinitionTextView = findViewById(R.id.text_view_definition);
         mButton = findViewById(R.id.button_next);
 
         new WordFetchTask().execute();
@@ -60,20 +66,40 @@ public class MainActivity extends AppCompatActivity {
 
     public void nextWord() {
 
-        // Change button text
-        mButton.setText(getString(R.string.show_definition));
+        if (mData != null) {
 
-        mCurrentState = STATE_HIDDEN;
+            if (!mData.moveToNext()) {
+                mData.moveToFirst();
+            }
 
+            //Hide the definition TextView
+            mDefinitionTextView.setVisibility(View.INVISIBLE);
+            // Change button text
+            mButton.setText(getString(R.string.show_definition));
+
+            //get the next word
+            mWordTextView.setText(mData.getString(mWordCol));
+            mDefinitionTextView.setText(mData.getString(mDefCol));
+
+            mCurrentState = STATE_HIDDEN;
+        }
     }
 
     public void showDefinition() {
 
-        // Change button text
-        mButton.setText(getString(R.string.next_word));
+        if (mData != null) {
+            mDefinitionTextView.setVisibility(View.VISIBLE);
+            // Change button text
+            mButton.setText(getString(R.string.next_word));
 
-        mCurrentState = STATE_SHOWN;
+            mCurrentState = STATE_SHOWN;
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mData.close();
     }
 
     public class WordFetchTask extends AsyncTask<Void, Void, Cursor> {
@@ -100,9 +126,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Set the data for MainActivity
             mData = cursor;
+            // Get the column index, in the Cursor, of each piece of data
+            mDefCol = mData.getColumnIndex(DroidTermsExampleContract.COLUMN_DEFINITION);
+            mWordCol = mData.getColumnIndex(DroidTermsExampleContract.COLUMN_WORD);
+
+            nextWord();
         }
-
-
     }
 
 }
